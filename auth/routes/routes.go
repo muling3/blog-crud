@@ -16,7 +16,7 @@ func Router() *fiber.App {
 	app.Post("/", handlers.AuthenticateUser)
 
 	// adding a user
-	app.Post("/", handlers.CreateUser)
+	app.Post("/new", handlers.CreateUser)
 
 	//logging user out
 	app.Post("/logout", handlers.LogoutUser)
