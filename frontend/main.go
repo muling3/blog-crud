@@ -24,6 +24,13 @@ func main() {
 		})
 	})
 
+	//register endpoint
+	app.Get("/register", func(ctx *fiber.Ctx) error {
+		return ctx.Render("register", fiber.Map{
+			"Title": "Register Page",
+		})
+	})
+
 	//serving static files
 	app.Static("/", "./public")
 
