@@ -7,3 +7,8 @@ type User struct {
 	Password string `json:"password,omitempty" form:"password"`
 	Action   string `json:"action,omitempty" form:"action"`
 }
+
+type ResponseBody struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+}
