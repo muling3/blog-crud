@@ -2,7 +2,10 @@ module github.com/muling3/auth
 
 go 1.19
 
-require github.com/gofiber/fiber/v2 v2.46.0
+require (
+	github.com/gofiber/fiber/v2 v2.46.0
+	github.com/lib/pq v1.10.9
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
