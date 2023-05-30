@@ -14,7 +14,14 @@ func AuthenticateUser(ctx *fiber.Ctx) error {
 	var user utils.User
 
 	if err := json.Unmarshal(ctx.Body(), &user); err != nil {
-		log.Println("error parsing", err)
+		errorMap := fiber.Map{
+			"error":   http.StatusBadRequest,
+			"message": err,
+		}
+
+		//return the error
+		ctx.SendStatus(http.StatusBadRequest)
+		return ctx.JSON(errorMap)
 	}
 	log.Printf("%+v", user)
 
@@ -31,7 +38,14 @@ func CreateUser(ctx *fiber.Ctx) error {
 	var user utils.User
 
 	if err := json.Unmarshal(ctx.Body(), &user); err != nil {
-		log.Println("error parsing", err)
+		errorMap := fiber.Map{
+			"error":   http.StatusBadRequest,
+			"message": err,
+		}
+
+		//return the error
+		ctx.SendStatus(http.StatusBadRequest)
+		return ctx.JSON(errorMap)
 	}
 	log.Printf("%+v", user)
 
