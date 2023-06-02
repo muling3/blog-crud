@@ -1,10 +1,10 @@
 package main
 
 import (
-	"context"
 	"database/sql"
 	"log"
 
+	"github.com/muling3/auth/config"
 	database "github.com/muling3/auth/db/sqlc"
 	"github.com/muling3/auth/routes"
 
@@ -12,12 +12,10 @@ import (
 )
 
 func main() {
-	// initializing app
-	app := routes.Router()
+	// initialising root level config
+	var appConfig config.AppConfig
 
 	// initializing database
-	ctx := context.Background()
-
 	db, err := sql.Open("postgres", "postgresql://root:password@localhost:5432/blog_microservice?sslmode=disable")
 	if err != nil {
 		log.Println(err)
@@ -27,13 +25,11 @@ func main() {
 
 	dbConn := database.New(db)
 
-	// list all users
-	users, err := dbConn.ListUsers(ctx)
-	if err != nil {
-		log.Println(err)
-	}
+	//registering root config
+	appConfig.Db = dbConn
 
-	log.Println(users)
+	// initializing app
+	app := routes.Router()
 
 	//serve
 	log.Fatal(app.Listen(":5000"))

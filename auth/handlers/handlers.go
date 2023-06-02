@@ -34,7 +34,6 @@ func AuthenticateUser(ctx *fiber.Ctx) error {
 }
 
 func CreateUser(ctx *fiber.Ctx) error {
-	log.Println("create action")
 	var user utils.User
 
 	if err := json.Unmarshal(ctx.Body(), &user); err != nil {
@@ -47,7 +46,9 @@ func CreateUser(ctx *fiber.Ctx) error {
 		ctx.SendStatus(http.StatusBadRequest)
 		return ctx.JSON(errorMap)
 	}
-	log.Printf("%+v", user)
+	
+	// create user
+	
 
 	responseMap := fiber.Map{
 		"status":  http.StatusCreated,
