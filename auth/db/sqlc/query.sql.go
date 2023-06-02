@@ -11,19 +11,19 @@ import (
 
 const CreateUser = `-- name: CreateUser :one
 INSERT INTO users (
-  full_name, username, email, password, type
+  full_name, username, email, password, account_type
 ) VALUES (
   $1, $2, $3, $4, $5
 )
-RETURNING id, full_name, username, email, password, active, type, last_login
+RETURNING id, full_name, username, email, password, active, account_type, last_login
 `
 
 type CreateUserParams struct {
-	FullName string   `json:"full_name"`
-	Username string   `json:"username"`
-	Email    string   `json:"email"`
-	Password string   `json:"password"`
-	Type     NullType `json:"type"`
+	FullName    string          `json:"full_name"`
+	Username    string          `json:"username"`
+	Email       string          `json:"email"`
+	Password    string          `json:"password"`
+	AccountType NullAccountType `json:"account_type"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
@@ -32,7 +32,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		arg.Username,
 		arg.Email,
 		arg.Password,
-		arg.Type,
+		arg.AccountType,
 	)
 	var i User
 	err := row.Scan(
@@ -42,7 +42,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Email,
 		&i.Password,
 		&i.Active,
-		&i.Type,
+		&i.AccountType,
 		&i.LastLogin,
 	)
 	return i, err
@@ -59,7 +59,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 }
 
 const GetUser = `-- name: GetUser :one
-SELECT id, full_name, username, email, password, active, type, last_login FROM users
+SELECT id, full_name, username, email, password, active, account_type, last_login FROM users
 WHERE id = $1 LIMIT 1
 `
 
@@ -73,14 +73,14 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 		&i.Email,
 		&i.Password,
 		&i.Active,
-		&i.Type,
+		&i.AccountType,
 		&i.LastLogin,
 	)
 	return i, err
 }
 
 const ListUsers = `-- name: ListUsers :many
-SELECT id, full_name, username, email, password, active, type, last_login FROM users
+SELECT id, full_name, username, email, password, active, account_type, last_login FROM users
 ORDER BY username
 `
 
@@ -100,7 +100,7 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 			&i.Email,
 			&i.Password,
 			&i.Active,
-			&i.Type,
+			&i.AccountType,
 			&i.LastLogin,
 		); err != nil {
 			return nil, err
@@ -120,7 +120,7 @@ const UpdateUser = `-- name: UpdateUser :one
 UPDATE users
   set password = $2
 WHERE id = $1
-RETURNING id, full_name, username, email, password, active, type, last_login
+RETURNING id, full_name, username, email, password, active, account_type, last_login
 `
 
 type UpdateUserParams struct {
@@ -138,7 +138,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.Email,
 		&i.Password,
 		&i.Active,
-		&i.Type,
+		&i.AccountType,
 		&i.LastLogin,
 	)
 	return i, err

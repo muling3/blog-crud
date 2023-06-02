@@ -8,7 +8,7 @@ ORDER BY username;
 
 -- name: CreateUser :one
 INSERT INTO users (
-  full_name, username, email, password, type
+  full_name, username, email, password, account_type
 ) VALUES (
   $1, $2, $3, $4, $5
 )

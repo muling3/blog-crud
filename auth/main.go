@@ -6,6 +6,7 @@ import (
 
 	"github.com/muling3/auth/config"
 	database "github.com/muling3/auth/db/sqlc"
+	"github.com/muling3/auth/handlers"
 	"github.com/muling3/auth/routes"
 
 	_ "github.com/lib/pq"
@@ -27,6 +28,9 @@ func main() {
 
 	//registering root config
 	appConfig.Db = dbConn
+
+	//initialising app config
+	handlers.NewAppConfig(&appConfig)
 
 	// initializing app
 	app := routes.Router()
